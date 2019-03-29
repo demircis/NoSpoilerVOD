@@ -1,0 +1,40 @@
+.player-seek__time--total {
+  display: none;
+}
+
+.tw-absolute.tw-left-0.tw-mg-1.tw-top-0 {
+  display: none;
+}
+
+.player-slider.js-player-slider {
+  pointer-events: none;
+}
+
+.player-slider.js-player-slider::before {
+  background: #a991d4;
+}
+
+.player-slider.js-player-slider .player-slider__buffer {
+  background: #a991d4;
+}
+
+.player-slider .player-slider__thumb {
+  display: none;
+}
+
+.vod-controls {
+  display: inline-flex;
+  justify-content: flex-start;
+  height: 4em;
+  border: none;
+}
+
+.ttv-button {
+  width: 30px;
+  height: 30px;
+  padding-bottom: 10px;
+}
+
+.ttv-video {
+  filter: blur(50px);
+}

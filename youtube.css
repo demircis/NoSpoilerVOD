@@ -1,0 +1,37 @@
+.ytp-time-separator {
+  display: none;
+}
+
+.ytp-time-duration {
+  display: none;
+}
+
+.ytp-scrubber-button {
+  display: none;
+}
+
+.ytp-preview {
+  display: none;
+}
+
+.ytp-progress-bar-container {
+  pointer-events: none;
+}
+
+.ytd-thumbnail-overlay-time-status-renderer {
+  display: none;
+}
+
+.vod-controls {
+  font-size: 109%;
+  display: inline-flex;
+  vertical-align: top;
+  padding: 0 5px;
+  white-space: nowrap;
+  line-height: 35px;
+  height: 100%;
+}
+
+.yt-vid {
+  filter: blur(50px);
+}

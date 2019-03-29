@@ -1,0 +1,28 @@
+{
+  "name": "VOD",
+  "version": "1.0",
+  "description": "Watch VODs without spoilers",
+  "manifest_version": 2,
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+    "matches": ["https://www.youtube.com/*"],
+    "css": ["youtube.css"],
+    "js": ["jquery/jquery-3.3.1.min.js", "youtube.js"]
+    },
+    {
+    "matches": ["https://www.twitch.tv/*/videos", "https://www.twitch.tv/videos/*"],
+    "css": ["twitch.css"],
+    "js": ["jquery/jquery-3.3.1.min.js", "twitch.js"]
+    }
+  ],
+  "page_action": {
+    "default_icon": {
+        "16": "images/icon-16x16.png",
+        "32": "images/icon-32x32.png",
+        "48": "images/icon-48x48.png",
+        "128": "images/icon-128x128.png"
+    },
+    "default_title": "VOD"
+  }
+}
