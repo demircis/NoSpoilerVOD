@@ -4,44 +4,49 @@ var skipAmount = {
   SKIP_30: 30
 };
 
-let player = $('video')[0];
-player.pause();
-player.className = 'yt-vid';
-
-let playerControls = document.getElementsByClassName('ytp-left-controls');
-addSkipButtons(playerControls[0]);
-
-let progressList = document.getElementsByClassName('ytp-progress-list');
-progressList[0].style.background = "red";
-progressList[0].style.cursor = "default";
-let progressBar = document.getElementsByClassName('ytp-progress-bar');
-progressBar[0].style.cursor = "default";
-let progressBarLoadProgress = document.getElementsByClassName('ytp-load-progress');
-progressBarLoadProgress[0].style.background = "red";
-progressBarLoadProgress[0].style.cursor = "default";
-let progressBarHoverProgress = document.getElementsByClassName('ytp-hover-progress');
-progressBarHoverProgress[0].style.background = "red";
-progressBarHoverProgress[0].style.cursor = "default";
-
-let forward5Button = document.getElementById('forward-5-button');
-forward5Button.onclick = () => { skip(player, skipAmount.SKIP_5, 1) };
-let forward10Button = document.getElementById('forward-10-button');
-forward10Button.onclick = () => { skip(player, skipAmount.SKIP_10, 1) };
-let forward30Button = document.getElementById('forward-30-button');
-forward30Button.onclick = () => { skip(player, skipAmount.SKIP_30, 1) };
-
-let replay5Button = document.getElementById('replay-5-button');
-replay5Button.onclick = () => { skip(player, skipAmount.SKIP_5, -1) };
-let replay10Button = document.getElementById('replay-10-button');
-replay10Button.onclick = () => { skip(player, skipAmount.SKIP_10, -1) };
-let replay30Button = document.getElementById('replay-30-button');
-replay30Button.onclick = () => { skip(player, skipAmount.SKIP_30, -1) };
-
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
     disableNumberKeys();
+
+    let videoContainer = document.getElementsByClassName('html5-video-container')[0];
+    let player = $('video')[0];
+
+    if (videoContainer != null && player != null && videoIsLive()) {
+      player.className = 'yt-vid';
+      player.defaultMuted = true;
+      clickToUnmuteAndUnblur(player, videoContainer);
+    }
+
+    let playerControls = document.getElementsByClassName('ytp-left-controls');
+    if (playerControls[0] != null) {
+      addSkipButtons(playerControls[0]);
+    }
+
+    let progressList = document.getElementsByClassName('ytp-progress-list');
+    if (progressList != null) {
+      progressList[0].style.background = "red";
+    }
+    let progressBarLoadProgress = document.getElementsByClassName('ytp-load-progress');
+    if (progressBarLoadProgress != null) {
+      progressBarLoadProgress[0].style.background = "red";
+    }
+
+    let forward5Button = document.getElementById('forward-5-button');
+    forward5Button.onclick = () => { skip(player, skipAmount.SKIP_5, 1) };
+    let forward10Button = document.getElementById('forward-10-button');
+    forward10Button.onclick = () => { skip(player, skipAmount.SKIP_10, 1) };
+    let forward30Button = document.getElementById('forward-30-button');
+    forward30Button.onclick = () => { skip(player, skipAmount.SKIP_30, 1) };
+
+    let replay5Button = document.getElementById('replay-5-button');
+    replay5Button.onclick = () => { skip(player, skipAmount.SKIP_5, -1) };
+    let replay10Button = document.getElementById('replay-10-button');
+    replay10Button.onclick = () => { skip(player, skipAmount.SKIP_10, -1) };
+    let replay30Button = document.getElementById('replay-30-button');
+    replay30Button.onclick = () => { skip(player, skipAmount.SKIP_30, -1) };
+
   }
-};
+}
 
 function addSkipButtons(playerControls) {
   let div = document.createElement('div');
@@ -51,11 +56,14 @@ function addSkipButtons(playerControls) {
 }
 
 function skip(player, amount, direction) {
-  let currTime = player.currentTime;
-  if (direction == 1) {
-    player.currentTime = currTime + amount;
-  } else if (direction == -1) {
-    player.currentTime = currTime - amount;
+  console.log(player);
+  if (player != null) {
+    let currTime = player.currentTime;
+    if (direction == 1) {
+      player.currentTime = currTime + amount;
+    } else if (direction == -1) {
+      player.currentTime = currTime - amount;
+    }
   }
 }
 
@@ -72,4 +80,15 @@ function disableNumberKeys() {
       return true;
     }
   }
+}
+
+function clickToUnmuteAndUnblur(player, videoContainer) {
+  videoContainer.onclick = (event) => {
+    player.style.filter = 'none';
+    player.muted = false;
+  };
+}
+
+function videoIsLive() {
+  return document.getElementsByClassName('ytp-live-badge')[0].attributes.disabled.value !== 'true';
 }

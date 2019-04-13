@@ -3,10 +3,11 @@
   "version": "1.0",
   "description": "Watch VODs without spoilers",
   "manifest_version": 2,
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
     "matches": ["https://www.youtube.com/*"],
+    "run_at": "document_start",
     "css": ["youtube.css"],
     "js": ["jquery/jquery-3.3.1.min.js", "youtube.js"]
     },
@@ -16,6 +17,10 @@
     "js": ["jquery/jquery-3.3.1.min.js", "twitch.js"]
     }
   ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "page_action": {
     "default_icon": {
         "16": "images/icon-16x16.png",
