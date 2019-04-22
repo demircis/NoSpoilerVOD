@@ -10,6 +10,10 @@
   display: none;
 }
 
+.ytp-chrome-controls:focus-within {
+  opacity: 1;
+}
+
 .vod-controls {
   font-size: 109%;
   display: inline-flex;
@@ -27,6 +31,17 @@
   border-radius: 5px;
   height: 60%;
   align-self: center;
+}
+
+.skip-by {
+  height: 60%;
+  width: 50px;
+  align-self: center;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-indent: 3px;
 }
 
 .yt-vid {

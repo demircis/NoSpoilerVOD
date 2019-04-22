@@ -6,6 +6,7 @@ var skipAmount = {
 
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
+    disableNumberKeys();
 
     let videoContainer = document.getElementsByClassName('html5-video-container')[0];
     let player = $('video')[0];
@@ -28,6 +29,7 @@ document.onreadystatechange = () => {
         fillProgressBar();
         removeProgressBarControls();
         addSkipButtons(player, playerControls);
+        addSkipByInput(player);
       }
     }
   }
@@ -81,6 +83,40 @@ function addSkipButtons(player, playerControls) {
   addSkipButtonsFunctionality(player);
 }
 
+function addSkipByInput(player) {
+  let controls = document.getElementById('vodControls');
+  let skipBy = document.createElement('input');
+  skipBy.className = 'skip-by';
+  skipBy.placeholder = '0:00';
+  skipBy.onkeydown = (event) => {
+    event.stopPropagation();
+    if (event.key === 'Enter') {
+      let minAndSec = skipBy.value.split(':');
+      if (minAndSec.length == 1) {
+        if (minAndSec[0].includes('-')) {
+          let amount = parseInt(minAndSec[0].substr(1));
+          skip(player, amount, -1);
+        } else {
+          let amount = parseInt(minAndSec[0]);
+          skip(player, amount, 1);
+        }
+      } else {
+        if (minAndSec[0].includes('-')) {
+          let amount = parseInt(minAndSec[0].substr(1))*60 + parseInt(minAndSec[1]);
+          skip(player, amount, -1);
+        } else {
+          let amount = parseInt(minAndSec[0])*60 + parseInt(minAndSec[1]);
+          skip(player, amount, 1);
+        }
+      }
+      skipBy.value = '';
+    }
+  }
+  if (controls != null) {
+    controls.appendChild(skipBy);
+  }
+}
+
 function addSpoilerButton(player) {
   let controls = document.getElementById('vodControls');
   let spoilerButton = document.createElement('button');
@@ -126,10 +162,10 @@ function skip(player, amount, direction) {
 }
 
 function disableNumberKeys() {
-  let keyCodesToDisable = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+  let keyCodesToDisable = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
   document.onkeydown = (e) => {
     if (!(document.activeElement.tagName === "INPUT")) {
-      if (keyCodesToDisable.includes(e.keyCode)) {
+      if (keyCodesToDisable.includes(e.key)) {
         return false;
       } else {
         return true;
