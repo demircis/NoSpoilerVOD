@@ -14,12 +14,16 @@ document.onreadystatechange = () => {
     if (videoContainer != null && player != null && playerControls != null) {
       addPlayerControlsDivElement(playerControls);
       if (videoIsLive()) {
-        player.className = 'yt-vid';
-        setTimeout(() => {
-          player.muted = true;
-        }, 2000);
+        getBlurAndMuteSetting().then((opt) => {
+          if (opt) {
+            player.className = 'yt-vid';
+            setTimeout(() => {
+              player.muted = true;
+            }, 2000);
+            addSpoilerButton(player);
+          }
+        });
         removeProgressBarPreviewImage();
-        addSpoilerButton(player);
       } else {
         fillProgressBar();
         removeProgressBarControls();
@@ -27,6 +31,14 @@ document.onreadystatechange = () => {
       }
     }
   }
+}
+
+function getBlurAndMuteSetting() {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(['blurAndMute'], function(result) {
+      resolve(result.blurAndMute);
+    });
+  })
 }
 
 function removeProgressBarPreviewImage() {
@@ -81,6 +93,7 @@ function addSpoilerButton(player) {
     if (player != null) {
       player.style.filter = 'none';
       player.muted = false;
+      controls.removeChild(spoilerButton);
     }
   };
 }
