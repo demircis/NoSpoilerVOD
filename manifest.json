@@ -3,7 +3,10 @@
   "version": "1.0",
   "description": "Watch VODs without spoilers",
   "manifest_version": 2,
-  "permissions": ["storage"],
+  "permissions": ["storage", "webNavigation", "*://www.twitch.tv/*"],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "content_scripts": [
     {
     "matches": ["*://www.youtube.com/*"],
@@ -12,9 +15,9 @@
     "js": ["youtube.js"]
     },
     {
-    "matches": ["*://www.twitch.tv/*/videos", "*://www.twitch.tv/videos/*"],
+    "matches": ["*://www.twitch.tv/*"],
     "css": ["twitch.css"],
-    "js": ["jquery/jquery-3.3.1.min.js", "twitch.js"]
+    "js": ["twitch.js"]
     }
   ],
   "options_ui": {
