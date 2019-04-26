@@ -4,16 +4,33 @@ var skipAmount = {
   SKIP_30: 30
 };
 
+(document.body || document.documentElement).addEventListener('transitionend', handleTransitionEvent, true);
+
+function handleTransitionEvent(event) {
+  event.stopPropagation();
+  if (event.propertyName === 'transform' && event.target.id === 'progress') {
+      afterNavigate();
+  }
+}
+
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
+    afterNavigate();
+  }
+}
+
+function afterNavigate() {
+  console.log(location.pathname);
+  if (location.pathname === '/watch') {
     disableNumberKeys();
 
     let videoContainer = document.getElementsByClassName('html5-video-container')[0];
-    let player = $('video')[0];
+    let player = document.getElementsByTagName('video')[0];
     let playerControls = document.getElementsByClassName('ytp-left-controls')[0];
-
     if (videoContainer != null && player != null && playerControls != null) {
+      removePlayerControlsDivElement(playerControls);
       addPlayerControlsDivElement(playerControls);
+      console.log(videoIsLive());
       if (videoIsLive()) {
         getBlurAndMuteSetting().then((opt) => {
           if (opt) {
@@ -73,6 +90,13 @@ function addPlayerControlsDivElement(playerControls) {
   div.className = 'vod-controls';
   div.id = 'vodControls';
   playerControls.appendChild(div);
+}
+
+function removePlayerControlsDivElement(playerControls) {
+  let vodControls = document.getElementById('vodControls');
+  if (vodControls) {
+    playerControls.removeChild(vodControls);
+  }
 }
 
 function addSkipButtons(player, playerControls) {
@@ -177,5 +201,5 @@ function disableNumberKeys() {
 }
 
 function videoIsLive() {
-  return document.getElementsByClassName('ytp-live-badge')[0].attributes.disabled.value !== 'true';
+  return document.getElementsByClassName('ytp-live').length != 0;
 }
